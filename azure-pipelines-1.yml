@@ -22,8 +22,12 @@ steps:
     jdkArchitectureOption: 'x64'
     jdkSource: 'PreInstalled'  # Use 'AzureStorage' if you uploaded your own JDK
 
-- script: java -version
-  displayName: 'Verify Java Version'
+- script: |
+    echo "Setting JAVA_HOME..."
+    export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which javac))))
+    export PATH=$JAVA_HOME/bin:$PATH
+    java -version
+  displayName: 'Set JAVA_HOME and Verify Java Version'
 
 - script: mvn clean compile
   displayName: 'Maven Build'
