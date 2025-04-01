@@ -19,8 +19,8 @@ steps:
 - task: JavaToolInstaller@0
   inputs:
     version: '17'
-    jdkArchitecture: 'x64'
-    jdkSource: 'PreInstalled'  # Or use 'AzureStorage' if you uploaded your own JDK
+    jdkArchitectureOption: 'x64'
+    jdkSource: 'PreInstalled'  # Use 'AzureStorage' if you uploaded your own JDK
 
 - script: java -version
   displayName: 'Verify Java Version'
