@@ -34,12 +34,4 @@ public class KDHomeStepDef {
         kastlesDirectHomePage.openApplication(appname);
     }
 
-    @After
-    public void afterScenario(Scenario scenario) {
-        String status = scenario.isFailed() ? "failed" : "passed";
-
-        // Update test status on LambdaTest
-        remoteWebDriver.executeScript("lambda-status=" + status);
-    }
-
 }
