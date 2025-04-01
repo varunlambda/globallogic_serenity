@@ -1,190 +1,47 @@
+
+# Maven
+
+# Build your Java project and run tests with Apache Maven.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/java
+
+trigger:
+- master
+
 pool:
-  name: $(poolName)
-  demands:
-    - Agent.Name -equals $(agentName)
+  vmImage: ubuntu-latest
 
 variables:
-  group: $(variableGroupName)
-  MAVEN_CACHE_FOLDER: $(Pipeline.Workspace)/.m2/repository
-  MAVEN_OPTS: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
+  LT_USERNAME: 'varunkumarb'
+  LT_ACCESS_KEY: 'GhGShOYHz1jODWE9qDvkJK4nPDR3n2lc0gNp9VknalhwtUineG'
 
-parameters:
-  - name: Browser
-    type: string
-    default: chrome
-    displayName: 'Select a Browser Type'
-    values:
-      - chrome
-      - firefox
-      - edge
+steps:
 
-  - name: SelectVariableGroup
-    type: string
-    default: qa1
-    displayName: 'Select an Environment Variable Group'
-    values:
-      - dev1
-      - qa1
-      - int
+- task: Cache@2
+  inputs:
+    key: 'maven | "pom.xml"'
+    path: '~/.m2/repository'
+    cacheHitVar: 'CACHE_RESTORED'
+    displayName: 'Cache Maven dependencies'
 
-  - name: App
-    type: string
-    default: Test
-    displayName: 'Select an Application'
-    values:
-      - Test
-      - MK
-      - KD
-      - MKM
-      - KMF
-      - overLay
+- task: configuration@1
+  inputs:
+    connection: 'tunnelVarun'
+    isTunnelActivate: true
+    isAppAutomate: false
+    isSmartUI: false
 
-stages:
-  - stage: Run_Automation_Test_Suite_And_Publish_Report
-    displayName: "Run Automation Test Suite And Publish Report"
-    jobs:
-      - job: '${{ parameters.App }}'
-        displayName: 'Build_${{parameters.App}}_Running_With_${{parameters.SelectVariableGroup}}'
-        timeoutInMinutes: 0
-        variables:
-          - group: ${{ parameters.SelectVariableGroup }}
-        steps:
-          - task: PowerShell@2
-            displayName: Extract Tag from last commitMsg/BranchName and finalizing the Tag
-            inputs:
-              targetType: 'inline'
-              script: |
-                $extractTag=""
-                $commitMsg = "$(Build.SourceVersionMessage)"
-                if($commitMsg -match '(@[A-Za-z]+[-0-9]+)'){
-                  $extractTag = $matches[1]
-                }
-                if("$(Tags)" -eq "Dummy"){
-                  if($extractTag.Contains('@')){
-                    Write-Host "##vso[task.setvariable variable=TagFromVariableGroup;]$extractTag"
-                    Write-Host "##vso[task.setvariable variable=Tags;]$TagFromVariableGroup"
-                    Write-Host "##vso[task.setvariable variable=Tags;]$extractTag"
-                  }
-                }
-            continueOnError: true
-
-          - template: update-config-template.yml
-            parameters:
-              configFilePath: "$(Build.SourcesDirectory)/src/test/resources/configuration/serenity-azure-variables.properties"
-
-          - task: Cache@2
-            displayName: Cache Maven Dependencies
-            inputs:
-              key: 'maven | "$(Agent.OS)" | **/pom.xml'
-              path: '$(MAVEN_CACHE_FOLDER)'
-              restoreKeys: |
-                maven | "$(Agent.OS)"
-                maven
-            continueOnError: true
-
-          - task: Maven@4
-            displayName: 'Build Job'
-            inputs:
-              mavenPomFile: 'pom.xml'
-              goals: 'clean verify -X'
-              options: >
-                -Dcucumber.filter.tags="@${{ parameters.App }} and $(Tags)"
-                -Dwebdriver.driver=${{ parameters.Browser }}
-                -Denvironment=azure-variables
-                -DthreadCount=$(threadCount)
-              mavenOptions: '-Xmx4096m $(MAVEN_OPTS)'
-            continueOnError: true
-            env:
-              SYSTEM_DEBUG: true
-
-
-          - task: PublishPipelineArtifact@1
-            displayName: 'Archived HTML Report'
-            inputs:
-              targetPath: '$(system.DefaultWorkingDirectory)/target/site/serenity/serenity-summary.html'
-              artifact: Report
-            continueOnError: true
-
-          - task: ArchiveFiles@2
-            displayName: 'Test Report'
-            inputs:
-              rootFolderOrFile: '$(system.DefaultWorkingDirectory)/target/site/serenity'
-              includeRootFolder: false
-            continueOnError: true
-
-          - task: PublishTestResults@2
-            displayName: Publish Junit Test Results
-            inputs:
-              testResultsFormat: 'JUnit'
-              testResultsFiles: '**/SERENITY-JUNIT-*.xml'
-              searchFolder: '$(System.DefaultWorkingDirectory)/target/site/serenity/'
-              testRunTitle: 'Junit Test Results'
-            continueOnError: true
-
-          - task: ArchiveFiles@2
-            displayName: Zipping Report Folder
-            inputs:
-              rootFolderOrFile: '$(System.DefaultWorkingDirectory)/target/site/serenity'
-              includeRootFolder: false
-              archiveType: 'zip'
-              archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-              replaceExistingArchive: true
-            continueOnError: true
-
-          - task: PublishPipelineArtifact@1
-            displayName: 'Archived Zip Report'
-            inputs:
-              targetPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-              artifact: Aggregate Report
-            continueOnError: true
-            
-          - task: Bash@3
-            displayName: "Install jq and Merge Cucumber JSON Reports"
-            inputs:
-              targetType: 'inline'
-              script: |
-                # Check if jq is installed, if not, install it
-                if ! command -v jq &> /dev/null; then
-                  echo "jq not found, installing..."
-                  curl -L -o "$(Build.ArtifactStagingDirectory)/jq.exe" https://github.com/stedolan/jq/releases/download/jq-1.6/jq-win64.exe
-                  export PATH="$PATH:$(Build.ArtifactStagingDirectory)"
-                  echo "jq installed successfully."
-                else
-                  echo "jq is already installed."
-                fi
-
-                # Define Paths
-                json_dir="$(System.DefaultWorkingDirectory)/target/cucumber-parallel"
-                output_dir="$(System.DefaultWorkingDirectory)/target/cucumber-reports"
-                output_file="$output_dir/cucumber.json"
-
-                # Create output directory if it doesn't exist
-                mkdir -p "$output_dir"
-
-                # Find all non-empty JSON files in the directory
-                json_files=()
-                for file in "$json_dir"/*.json; do
-                  if [[ -s "$file" ]]; then
-                    json_files+=("$file")
-                  else
-                    echo "Skipping empty file: $file"
-                  fi
-                done
-
-                # Check if there are any valid JSON files to merge
-                if [ ${#json_files[@]} -eq 0 ]; then
-                  echo "No valid JSON files found for merging. Exiting."
-                  exit 0
-                fi
-
-                # Merge JSON files using jq
-                echo "Merging ${#json_files[@]} JSON files..."
-                "$(Build.ArtifactStagingDirectory)/jq.exe" -s '[.[][]]' "${json_files[@]}" > "$output_file"
-
-          - task: PublishPipelineArtifact@1
-            displayName: "Upload Merged Cucumber JSON File"
-            inputs:
-              targetPath: "$(System.DefaultWorkingDirectory)/target/cucumber-reports/cucumber.json"
-              artifact: "Merged Cucumber Json File"
-            continueOnError: true
-
+- task: Maven@3
+  inputs:
+    mavenPomFile: 'pom.xml'
+    mavenOptions: '-Xmx3072m'
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '1.11'
+    jdkArchitectureOption: 'x64'
+    publishJUnitResults: true
+    testResultsFiles: '**/surefire-reports/TEST-*.xml'
+    goals: 'package'
+    
+- script: |
+    echo "Running serenity test suit"
+    mvn clean verify -DforkCount=0 -Ddatabase=NCA-int -Denvironment=aks-int -Dwebdriver.driver=chrome -DthreadCount=1 -Dcucumber.filter.tags=@KD
