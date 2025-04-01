@@ -1,0 +1,7 @@
+starter/runners/TestRunnerCukes.class
+starter/Pages/kastleDirectPages/KDHomePage/KDHomePage.class
+Parallel01IT.class
+utilities/DefaultConfig.class
+utilities/DefaultConfig$ApplicationPaths.class
+utilities/EnvironmentPropertiesUtils.class
+starter/stepdefinitions/kastleDirectStepDefs/KDHomeStepDefs/KDHomeStepDef.class

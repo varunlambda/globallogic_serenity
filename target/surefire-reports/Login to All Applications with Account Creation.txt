@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: Login to All Applications with Account Creation
+-------------------------------------------------------------------------------
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 45.75 s -- in Login to All Applications with Account Creation

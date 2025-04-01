@@ -1,0 +1,57 @@
+parameters:
+  - name: configFilePath
+    type: string
+
+steps:
+  - task: PowerShell@2
+    displayName: 'Update Configuration File'
+    inputs:
+      targetType: 'inline'
+      script: |
+        function Update-ConfigFile {
+            param (
+                [string]$configFilePath
+            )
+
+            # Validate the configFilePath parameter
+            if ([string]::IsNullOrWhiteSpace($configFilePath)) {
+                Write-Error "The configFilePath parameter is null or empty."
+                exit 1
+            }
+
+            # Check if the file exists
+            if (-Not (Test-Path $configFilePath)) {
+                Write-Error "$configFilePath not found at the expected location."
+                exit 1
+            }
+
+            # Read the config file into memory
+            $configContent = Get-Content $configFilePath -Raw
+
+            # Get all pipeline variables
+            $pipelineVariables = Get-ChildItem env:
+
+            # Regex to find placeholders $(variableName)
+            $regex = '\$\((.*?)\)'  # This pattern will match $(variableName)
+            $matches = [System.Text.RegularExpressions.Regex]::Matches($configContent, $regex)
+
+            # Replace placeholders with actual values
+            foreach ($match in $matches) {
+                $placeholder = $match.Value
+                $varName = $match.Groups[1].Value
+
+                $varValue = (Get-Item env:$varName).Value
+
+                if ($null -ne $varValue -and $varValue -ne "") {
+                    Write-Host "Replacing placeholder: $placeholder with value: $varValue"
+                    $configContent = $configContent -replace [System.Text.RegularExpressions.Regex]::Escape($placeholder), $varValue
+                } else {
+                    Write-Host "Warning: Environment variable $varName is not set or is empty, skipping replacement for $placeholder."
+                }
+            }
+            Set-Content -Path $configFilePath -Value $configContent -Force
+            Write-Host "$configFilePath updated successfully with the corresponding variable values."
+        }
+
+        # Call the function with the passed file path
+        Update-ConfigFile -configFilePath ${{ parameters.configFilePath }}
