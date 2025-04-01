@@ -6,18 +6,8 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
-variables:
-  LT_USERNAME: 'varunkumarb'
-  LT_ACCESS_KEY: 'GhGShOYHz1jODWE9qDvkJK4nPDR3n2lc0gNp9VknalhwtUineG'
-
 steps:
 
-- script: |
-    echo "Setting environment variables for LambdaTest"
-    export LT_USERNAME=$(LT_USERNAME)
-    export LT_ACCESS_KEY=$(LT_ACCESS_KEY)
-  displayName: 'Set LambdaTest Credentials'
-  
 - task: JavaToolInstaller@0
   inputs:
     version: '17'
