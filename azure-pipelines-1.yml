@@ -7,8 +7,8 @@ pool:
   vmImage: ubuntu-latest
 
 variables:
-  # LT_USERNAME: "$(USERNAME)"
-  # LT_ACCESS_KEY: "$(ACCESS)"
+  LT_USERNAME: "$(USERNAME)"
+  LT_ACCESS_KEY: "$(ACCESS)"
   LT_BUILD_NAME: "Kastle_WebUI_Automation_$(ENV)"
 
 steps:
@@ -24,8 +24,8 @@ steps:
     export PATH=$JAVA_HOME/bin:$PATH
     printenv
     java -version
-    # echo $LT_USERNAME
-    # echo $LT_ACCESS_KEY
+    echo $LT_USERNAME
+    echo $LT_ACCESS_KEY
     echo $LT_BUILD_NAME
   displayName: 'Set JAVA_HOME and Verify Java Version'
 
