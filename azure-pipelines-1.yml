@@ -9,6 +9,7 @@ pool:
 variables:
   LT_USERNAME: $(LT_USERNAME)
   LT_ACCESS_KEY: $(LT_ACCESS_KEY)
+  LT_BUILD_NAME: "Kastle_WebUI_Automation_$(ENV)"
 
 steps:
 - task: JavaToolInstaller@0
