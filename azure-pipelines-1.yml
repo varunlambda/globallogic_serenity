@@ -6,8 +6,11 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
-steps:
+variables:
+  LT_USERNAME: $(LT_USERNAME)
+  LT_ACCESS_KEY: $(LT_ACCESS_KEY)
 
+steps:
 - task: JavaToolInstaller@0
   inputs:
     version: '17'
