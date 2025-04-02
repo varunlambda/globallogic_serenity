@@ -23,9 +23,9 @@ public class KDHomeStepDef {
     public void beforeScenario(Scenario scenario) {
         String scenarioName = scenario.getName();
 
-        System.out.println("LT_USERNAME: "+System.getenv("LT_USERNAME"));
-        System.out.println("KEY: "+System.getenv("LT_ACCESS_KEY"));
-        System.out.println("KEY: "+System.getenv("LT_BUILD_NAME"));
+        System.out.println("LT_USERNAME: " + System.getProperty("LT_USERNAME"));
+        System.out.println("KEY: " + System.getProperty("LT_ACCESS_KEY"));
+        System.out.println("KEY: " + System.getProperty("LT_BUILD_NAME"));
 
         // Get the current WebDriver instance
         remoteWebDriver = (RemoteWebDriver) ((DevToolsWebDriverFacade) ThucydidesWebDriverSupport.getDriver()).getProxiedDriver();
