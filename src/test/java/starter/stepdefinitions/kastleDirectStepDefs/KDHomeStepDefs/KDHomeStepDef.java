@@ -28,6 +28,14 @@ public class KDHomeStepDef {
         System.out.println("KEY: " + System.getProperty("LT_ACCESS_KEY"));
         System.out.println("BUILD NAME" + System.getProperty("LT_BUILD_NAME"));
 
+        String username = System.getenv("LT_USERNAME");
+        String accessKey = System.getenv("LT_ACCESS_KEY");
+        String buildName = System.getenv("LT_BUILD_NAME");
+
+        System.out.println("LT_USERNAME - 1: " + username);
+        System.out.println("LT_ACCESS_KEY - 1: " + accessKey);
+        System.out.println("LT_BUILD_NAME - 1: " + buildName);
+
         // Get the current WebDriver instance
         remoteWebDriver = (RemoteWebDriver) ((DevToolsWebDriverFacade) ThucydidesWebDriverSupport.getDriver()).getProxiedDriver();
         // Update session name on LambdaTest
