@@ -24,6 +24,9 @@ steps:
     export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which javac))))
     export PATH=$JAVA_HOME/bin:$PATH
     java -version
+    echo $(LT_USERNAME)
+    echo $(LT_ACCESS_KEY)
+    echo $(LT_BUILD_NAME)
   displayName: 'Set JAVA_HOME and Verify Java Version'
 
 - task: configuration@1
