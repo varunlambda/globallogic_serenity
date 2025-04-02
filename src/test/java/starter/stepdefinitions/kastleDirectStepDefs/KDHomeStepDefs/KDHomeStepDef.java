@@ -26,7 +26,7 @@ public class KDHomeStepDef {
 
         System.out.println("LT_USERNAME: " + System.getProperty("LT_USERNAME"));
         System.out.println("KEY: " + System.getProperty("LT_ACCESS_KEY"));
-        System.out.println("KEY: " + System.getProperty("LT_BUILD_NAME"));
+        System.out.println("BUILD NAME" + System.getProperty("LT_BUILD_NAME"));
 
         // Get the current WebDriver instance
         remoteWebDriver = (RemoteWebDriver) ((DevToolsWebDriverFacade) ThucydidesWebDriverSupport.getDriver()).getProxiedDriver();
