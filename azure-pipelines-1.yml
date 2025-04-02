@@ -30,6 +30,7 @@ steps:
     echo $LT_USERNAME
     echo $LT_ACCESS_KEY
     echo $LT_BUILD_NAME
+    java -DLT_USERNAME=$LT_USERNAME -DLT_ACCESS_KEY=$LT_ACCESS_KEY -DLT_BUILD_NAME=$LT_BUILD_NAME
   displayName: 'Set JAVA_HOME and Verify Java Version'
   env:
     LT_USERNAME: $(LT_USERNAME)
