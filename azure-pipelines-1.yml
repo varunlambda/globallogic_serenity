@@ -7,8 +7,8 @@ pool:
   vmImage: ubuntu-latest
 
 variables:
-  LT_USERNAME: "$(USERNAME)"
-  LT_ACCESS_KEY: "$(ACCESS)"
+  LT_USERNAME: "_$(USERNAME)"
+  LT_ACCESS_KEY: "_$(ACCESS)"
   LT_BUILD_NAME: "Kastle_WebUI_Automation_$(ENV)"
 
 steps:
