@@ -22,7 +22,7 @@ public class KDHomeStepDef {
     public void beforeScenario(Scenario scenario) {
         String scenarioName = scenario.getName();
 
-        String ltBuildName = System.getProperty("LT_BUILD_NAME", "Kastle_WebUI_Automation_Default");
+       // String ltBuildName = System.getProperty("LT_BUILD_NAME", "Kastle_WebUI_Automation_Default");
 
         System.out.println("LT_USERNAME: " + System.getProperty("LT_USERNAME"));
         System.out.println("KEY: " + System.getProperty("LT_ACCESS_KEY"));
@@ -32,7 +32,7 @@ public class KDHomeStepDef {
         remoteWebDriver = (RemoteWebDriver) ((DevToolsWebDriverFacade) ThucydidesWebDriverSupport.getDriver()).getProxiedDriver();
         // Update session name on LambdaTest
         remoteWebDriver.executeScript("lambda-name=" + scenarioName);
-        remoteWebDriver.executeScript("lambda-build=" + ltBuildName);
+       // remoteWebDriver.executeScript("lambda-build=" + ltBuildName);
         
     }
 
