@@ -23,6 +23,9 @@ public class KDHomeStepDef {
     public void beforeScenario(Scenario scenario) {
         String scenarioName = scenario.getName();
 
+        System.out.println("LT_USERNAME: "+System.getenv("LT_USERNAME"));
+        System.out.println("KEY: "+System.getenv("LT_ACCESS_KEY"));
+
         // Get the current WebDriver instance
         remoteWebDriver = (RemoteWebDriver) ((DevToolsWebDriverFacade) ThucydidesWebDriverSupport.getDriver()).getProxiedDriver();
         // Update session name on LambdaTest
