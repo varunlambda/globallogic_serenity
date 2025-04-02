@@ -32,9 +32,9 @@ steps:
     echo $LT_BUILD_NAME
   displayName: 'Set JAVA_HOME and Verify Java Version'
   env:
-    LT_USERNAME: $(env.LT_USERNAME)
-    LT_ACCESS_KEY: $(env.LT_ACCESS_KEY)
-    LT_BUILD_NAME: $(env.LT_BUILD_NAME)
+    LT_USERNAME: $(LT_USERNAME)
+    LT_ACCESS_KEY: $(LT_ACCESS_KEY)
+    LT_BUILD_NAME: $(LT_BUILD_NAME)
 
 - task: configuration@1
   inputs:
