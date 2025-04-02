@@ -24,13 +24,9 @@ steps:
     export PATH=$JAVA_HOME/bin:$PATH
     printenv
     java -version
-    export LT_USERNAME=$(USERNAME)
-    export LT_ACCESS_KEY=$(ACCESS)
-    export LT_BUILD_NAME=$(LT_BUILD_NAME)
     echo $LT_USERNAME
     echo $LT_ACCESS_KEY
     echo $LT_BUILD_NAME
-    java -DLT_USERNAME=$LT_USERNAME -DLT_ACCESS_KEY=$LT_ACCESS_KEY -DLT_BUILD_NAME=$LT_BUILD_NAME
   displayName: 'Set JAVA_HOME and Verify Java Version'
   env:
     LT_USERNAME: $(LT_USERNAME)
@@ -57,4 +53,4 @@ steps:
 
 - script: |
     echo "Running mvn verify"
-    mvn clean verify -DforkCount=0 -Ddatabase=NCA-int -Denvironment=aks-int -Dwebdriver.driver=chrome -DthreadCount=2 -Dcucumber.filter.tags=@KD
+    mvn clean verify -DLT_USERNAME=$(LT_USERNAME) -DLT_USERNAME=$(LT_ACCESS_KEY) -DLT_USERNAME=$(LT_BUILD_NAME) -DforkCount=0 -Ddatabase=NCA-int -Denvironment=aks-int -Dwebdriver.driver=chrome -DthreadCount=2 -Dcucumber.filter.tags=@KD
