@@ -6,10 +6,10 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
-variables:
-  LT_USERNAME: $(LT_USERNAME)
-  LT_ACCESS_KEY: $(LT_ACCESS_KEY)
-  LT_BUILD_NAME: "Kastle_WebUI_Automation_$(ENV)"
+# variables:
+#   LT_USERNAME: $(LT_USERNAME)
+#   LT_ACCESS_KEY: $(LT_ACCESS_KEY)
+#   LT_BUILD_NAME: "Kastle_WebUI_Automation_$(ENV)"
 
 steps:
 - task: JavaToolInstaller@0
@@ -17,7 +17,6 @@ steps:
     version: '17'
     jdkArchitectureOption: 'x64'
     jdkSourceOption: 'PreInstalled'
-
     
 - script: |
     echo "Setting JAVA_HOME..."
