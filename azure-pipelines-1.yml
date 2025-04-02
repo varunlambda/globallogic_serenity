@@ -1,5 +1,3 @@
-# Maven Pipeline for Azure DevOps
-
 trigger:
 - master
 
@@ -54,3 +52,6 @@ steps:
 - script: |
     echo "Running mvn verify"
     mvn clean verify -DforkCount=0 -Ddatabase=NCA-int -Denvironment=aks-int -Dwebdriver.driver=chrome -DthreadCount=2 -Dcucumber.filter.tags=@KD -DLT_BUILD_NAME="$(LT_BUILD_NAME)"
+  displayName: 'Run Tests'
+  env:
+    LT_BUILD_NAME: $(LT_BUILD_NAME)
