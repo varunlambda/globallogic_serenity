@@ -53,4 +53,4 @@ steps:
 
 - script: |
     echo "Running mvn verify"
-    mvn clean verify -DforkCount=0 -Ddatabase=NCA-int -Denvironment=aks-int -Dwebdriver.driver=chrome -DthreadCount=2 -Dcucumber.filter.tags=@KD
+    mvn clean verify -DforkCount=0 -Ddatabase=NCA-int -Denvironment=aks-int -Dwebdriver.driver=chrome -DthreadCount=2 -Dcucumber.filter.tags=@KD -DLT_BUILD_NAME="$(LT_BUILD_NAME)"
