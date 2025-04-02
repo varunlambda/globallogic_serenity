@@ -11,7 +11,6 @@ import net.thucydides.core.webdriver.DevToolsWebDriverFacade;
 import net.thucydides.core.webdriver.ThucydidesWebDriverSupport;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import starter.Pages.kastleDirectPages.KDHomePage.KDHomePage;
-import net.serenitybdd.model.environment.EnvironmentSpecificConfiguration;
 
 @Slf4j
 public class KDHomeStepDef {
@@ -27,8 +26,6 @@ public class KDHomeStepDef {
         System.out.println("LT_USERNAME: " + System.getProperty("LT_USERNAME"));
         System.out.println("KEY: " + System.getProperty("LT_ACCESS_KEY"));
         System.out.println("KEY: " + System.getProperty("LT_BUILD_NAME"));
-        String username =  EnvironmentSpecificConfiguration.from(envVars).getProperty("LT_BUILD_NAME");
-        System.out.println("Username is :: " +  username);
 
         // Get the current WebDriver instance
         remoteWebDriver = (RemoteWebDriver) ((DevToolsWebDriverFacade) ThucydidesWebDriverSupport.getDriver()).getProxiedDriver();
