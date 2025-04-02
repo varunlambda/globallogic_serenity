@@ -6,10 +6,10 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
-variables:
-  LT_USERNAME: "$(USERNAME)"
-  LT_ACCESS_KEY: "$(ACCESS)"
-  LT_BUILD_NAME: "Kastle_WebUI_Automation_$(ENV)"
+# variables:
+#   LT_USERNAME: "$(USERNAME)"
+#   LT_ACCESS_KEY: "$(ACCESS)"
+#   LT_BUILD_NAME: "Kastle_WebUI_Automation_$(ENV)"
 
 steps:
 - task: JavaToolInstaller@0
@@ -27,6 +27,11 @@ steps:
     echo $LT_ACCESS_KEY
     echo $LT_BUILD_NAME
   displayName: 'Set JAVA_HOME and Verify Java Version'
+  env:
+    LT_USERNAME: "$(USERNAME)"
+    LT_ACCESS_KEY: "$(ACCESS)"
+    LT_BUILD_NAME: "Kastle_WebUI_Automation_$(ENV)"
+
 
 - task: configuration@1
   inputs:
