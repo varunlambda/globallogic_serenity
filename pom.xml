@@ -220,7 +220,7 @@
                                 <package>starter.hooks</package>
                                 <package>starter.stepdefinitions</package>
                             </glue>
-                            <parallelScheme>FEATURE</parallelScheme>
+                            <parallelScheme>SCENARIO</parallelScheme>
                             <customVmTemplate>src/test/resources/cucumber-serenity-runner.vm</customVmTemplate>
                         </configuration>
                     </execution>
