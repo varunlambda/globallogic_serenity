@@ -17,7 +17,6 @@ public class KDHomeStepDef {
     @Steps
     KDHomePage kastlesDirectHomePage;
     private RemoteWebDriver remoteWebDriver;
-    private EnvironmentVariables envVars;
 
     @Before
     public void beforeScenario(Scenario scenario) {
