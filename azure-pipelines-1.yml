@@ -59,7 +59,5 @@ steps:
     mvn -version
     mvn help:system | grep LT_BUILD_NAME
     echo "Running mvn verify with LT_BUILD_NAME: $(LT_BUILD_NAME)"
-    mvn clean verify -DforkCount=0 -Ddatabase=NCA-int -Denvironment=aks-int -Dwebdriver.driver=chrome -DthreadCount=2 -Dcucumber.filter.tags=@KD -DLT_BUILD_NAME="$(LT_BUILD_NAME)" -Dserenity.project.build="$(LT_BUILD_NAME)"
+    mvn clean verify -DforkCount=0 -Ddatabase=NCA-int -Denvironment=aks-int -Dwebdriver.driver=chrome -DthreadCount=2 -Dcucumber.filter.tags=@KD -DLT_BUILD_NAME="Kastle_WebUI_Automation_$(ENV)" -Dserenity.project.build="Kastle_WebUI_Automation_$(ENV)"
   displayName: 'Run Tests'
-  env:
-    LT_BUILD_NAME: $(LT_BUILD_NAME)
