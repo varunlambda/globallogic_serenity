@@ -7,7 +7,6 @@ pool:
 variables:
   LT_USERNAME: "$(USERNAME)"
   LT_ACCESS_KEY: "$(ACCESS)"
-  ENV: "default"  # Ensure ENV has a default value if not provided
   LT_BUILD_NAME: "Kastle_WebUI_Automation_$(ENV)"
 
 steps:
