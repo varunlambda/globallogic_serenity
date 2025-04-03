@@ -26,10 +26,11 @@ public class KDHomeStepDef {
 
         // Get the current WebDriver instance
         remoteWebDriver = (RemoteWebDriver) ((DevToolsWebDriverFacade) ThucydidesWebDriverSupport.getDriver()).getProxiedDriver();
-        // updating the build name
-        remoteWebDriver.executeScript("lambda-build=" + buildName);
+       
         // Update session name on LambdaTest
         remoteWebDriver.executeScript("lambda-name=" + scenarioName);
+        // updating the build name
+        remoteWebDriver.executeScript("lambda-build=" + buildName);
     }
 
     @Given("user open {string} application")
