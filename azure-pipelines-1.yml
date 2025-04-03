@@ -50,7 +50,7 @@ steps:
     mvn -version
     mvn help:system | grep LT_BUILD_NAME
     echo "Executing Maven verify with LT_BUILD_NAME: $LT_BUILD_NAME"
-    mvn clean verify -DforkCount=0 -Ddatabase=NCA-int -Denvironment=aks-int -Dwebdriver.driver=chrome -DthreadCount=2 -Dcucumber.filter.tags=@KD
+    mvn clean verify -DforkCount=0 -Ddatabase=NCA-int -Denvironment=aks-int -Dwebdriver.driver=chrome -DthreadCount=2 -Dcucumber.filter.tags=@KD -Dwebdriver.capabilities="build:$LT_BUILD_NAME"
   displayName: 'Run Tests'
   env:
     LT_BUILD_NAME: "Kastle_WebUI_Automation_$(ENV)"
