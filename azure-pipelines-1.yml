@@ -7,6 +7,7 @@ pool:
 variables:
   LT_USERNAME: "$(USERNAME)"
   LT_ACCESS_KEY: "$(ACCESS)"
+  ENV: "default"  # Ensure ENV has a default value if not provided
   LT_BUILD_NAME: "Kastle_WebUI_Automation_$(ENV)"
 
 steps:
@@ -15,22 +16,28 @@ steps:
     version: '17'
     jdkArchitectureOption: 'x64'
     jdkSourceOption: 'PreInstalled'
-    
+
 - script: |
     echo "Setting JAVA_HOME..."
     export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which javac))))
     export PATH=$JAVA_HOME/bin:$PATH
+    
+    echo "Verifying ENV variable..."
+    echo "ENV: $(ENV)"
+    
     export LT_BUILD_NAME="Kastle_WebUI_Automation_$(ENV)"
+    
+    echo "Printing environment variables..."
     printenv
     java -version
-    echo $LT_USERNAME
-    echo $LT_ACCESS_KEY
-    echo $LT_BUILD_NAME
+    echo "LT_USERNAME: $LT_USERNAME"
+    echo "LT_ACCESS_KEY: $LT_ACCESS_KEY"
+    echo "LT_BUILD_NAME: $LT_BUILD_NAME"
   displayName: 'Set JAVA_HOME and Verify Java Version'
   env:
     LT_USERNAME: $(LT_USERNAME)
     LT_ACCESS_KEY: $(LT_ACCESS_KEY)
-    LT_BUILD_NAME: $(LT_BUILD_NAME)
+    ENV: $(ENV)
 
 - task: configuration@1
   inputs:
@@ -51,8 +58,14 @@ steps:
     goals: 'package'
 
 - script: |
-    echo "Running mvn verify"
-     mvn clean verify -DforkCount=0 -Ddatabase=NCA-int -Denvironment=aks-int -Dwebdriver.driver=chrome -DthreadCount=2 -Dcucumber.filter.tags=@KD -DLT_BUILD_NAME="$LT_BUILD_NAME" -Dserenity.project.build="$LT_BUILD_NAME"
+    echo "Running mvn verify..."
+    
+    export LT_BUILD_NAME="Kastle_WebUI_Automation_$(ENV)"
+    
+    echo "Final LT_BUILD_NAME: $LT_BUILD_NAME"
+    
+    mvn clean verify -DforkCount=0 -Ddatabase=NCA-int -Denvironment=aks-int -Dwebdriver.driver=chrome -DthreadCount=2 -Dcucumber.filter.tags=@KD -DLT_BUILD_NAME="$LT_BUILD_NAME" -Dserenity.project.build="$LT_BUILD_NAME"
   displayName: 'Run Tests'
   env:
     LT_BUILD_NAME: $(LT_BUILD_NAME)
+    ENV: $(ENV)
