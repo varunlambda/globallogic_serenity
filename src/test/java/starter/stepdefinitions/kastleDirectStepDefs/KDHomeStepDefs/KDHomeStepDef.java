@@ -24,18 +24,22 @@ public class KDHomeStepDef {
 
        // String ltBuildName = System.getProperty("LT_BUILD_NAME", "Kastle_WebUI_Automation_Default");
 
+        System.setProperty("LT_BUILD_NAME", System.getenv("LT_BUILD_NAME"));
+        String buildName = System.getProperty("LT_BUILD_NAME");
+        System.out.println("Final Build Name: " + buildName);
+
         System.out.println("LT_USERNAME: " + System.getProperty("LT_USERNAME"));
         System.out.println("KEY: " + System.getProperty("LT_ACCESS_KEY"));
         System.out.println("BUILD NAME" + System.getProperty("LT_BUILD_NAME"));
 
         String username = System.getenv("LT_USERNAME");
         String accessKey = System.getenv("LT_ACCESS_KEY");
-        String buildName = System.getProperty("LT_BUILD_NAME", System.getenv("LT_BUILD_NAME"));
+        String buildName1 = System.getProperty("LT_BUILD_NAME", System.getenv("LT_BUILD_NAME"));
 
 
         System.out.println("LT_USERNAME - 1: " + username);
         System.out.println("LT_ACCESS_KEY - 1: " + accessKey);
-        System.out.println("LT_BUILD_NAME - 1: " + buildName);
+        System.out.println("LT_BUILD_NAME - 1: " + buildName1);
 
         // Get the current WebDriver instance
         remoteWebDriver = (RemoteWebDriver) ((DevToolsWebDriverFacade) ThucydidesWebDriverSupport.getDriver()).getProxiedDriver();
