@@ -24,13 +24,17 @@ public class KDHomeStepDef {
 
         String buildName = System.getProperty("LT_BUILD_NAME", System.getenv("LT_BUILD_NAME"));
 
+        if (buildName != null && !buildName.isEmpty()) {
+                System.setProperty("BUILD_NAME", buildName);
+            }
+
         // Get the current WebDriver instance
         remoteWebDriver = (RemoteWebDriver) ((DevToolsWebDriverFacade) ThucydidesWebDriverSupport.getDriver()).getProxiedDriver();
        
         // Update session name on LambdaTest
         remoteWebDriver.executeScript("lambda-name=" + scenarioName);
         // updating the build name
-        remoteWebDriver.executeScript("lambda-build=" + buildName);
+      //  remoteWebDriver.executeScript("lambda-build=" + buildName);
     }
 
     @Given("user open {string} application")
