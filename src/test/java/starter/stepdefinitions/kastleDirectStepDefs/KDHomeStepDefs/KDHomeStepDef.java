@@ -50,4 +50,10 @@ public class KDHomeStepDef {
         kastlesDirectHomePage.openApplication(appname);
     }
 
+    @After
+    public void afterScenario(Scenario scenario) {
+        String buildName = System.getProperty("LT_BUILD_NAME", System.getenv("LT_BUILD_NAME"));
+        System.out.println("LT_BUILD_NAME - After: " + buildName);
+    }
+
 }
