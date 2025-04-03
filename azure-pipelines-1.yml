@@ -22,8 +22,12 @@ steps:
     export PATH=$JAVA_HOME/bin:$PATH
     echo "Exporting LT_BUILD_NAME..."
     echo "##vso[task.setvariable variable=LT_BUILD_NAME;isOutput=true]Kastle_WebUI_Automation_$(ENV)"
+    echo "Verifying Environment Variables..."
     echo "LT_BUILD_NAME: $LT_BUILD_NAME"
   displayName: 'Set JAVA_HOME and Verify Java Version'
+  env:
+    LT_USERNAME: $(LT_USERNAME)
+    LT_ACCESS_KEY: $(LT_ACCESS_KEY)
 
 - task: configuration@1
   inputs:
@@ -46,7 +50,10 @@ steps:
     LT_BUILD_NAME: "Kastle_WebUI_Automation_$(ENV)"
 
 - script: |
+    echo "Ensuring LT_BUILD_NAME remains unchanged..."
     export LT_BUILD_NAME="Kastle_WebUI_Automation_$(ENV)"
+    echo "Final LT_BUILD_NAME before Maven execution: $LT_BUILD_NAME"
+    echo "##vso[task.setvariable variable=LT_BUILD_NAME;]$LT_BUILD_NAME"
     mvn -version
     mvn help:system | grep LT_BUILD_NAME
     echo "Executing Maven verify with LT_BUILD_NAME: $LT_BUILD_NAME"
