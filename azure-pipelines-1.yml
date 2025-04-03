@@ -20,7 +20,7 @@ steps:
     echo "Setting JAVA_HOME..."
     export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which javac))))
     export PATH=$JAVA_HOME/bin:$PATH
-    export LT_BUILD_NAME="Kastle_WebUI_Automation_${ENV}"
+    export LT_BUILD_NAME="Kastle_WebUI_Automation_$(ENV)"
     printenv
     java -version
     echo $LT_USERNAME
