@@ -9,6 +9,7 @@ pool:
 variables:
   LT_USERNAME: "$(USERNAME)"
   LT_ACCESS_KEY: "$(ACCESS)"
+  ENV: "dev"
   LT_BUILD_NAME: "Kastle_WebUI_Automation_$(ENV)"
 
 steps:
